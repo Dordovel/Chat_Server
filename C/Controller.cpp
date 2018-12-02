@@ -12,7 +12,6 @@
 
     Controller::~Controller()
     {
-
         serverStatus=false;
         delete view;
         view = nullptr;
@@ -48,7 +47,8 @@
 
     bool Controller::start()
     {
-        return (serverStatus=server->startServer());
+        serverStatus=server->startServer();
+        return serverStatus;
     }
 
     void Controller::printMessage()
