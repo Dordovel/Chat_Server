@@ -74,18 +74,18 @@ void Server::listenning()
 
 }
 
-bool Server::writing()
+bool Server::writing(SOCKET param)
 {
-    if ((read_write=send(read_write,buffer, sizeof(buffer),0))<0)
+    if ((read_write=send(param,buffer, sizeof(buffer),0))<0)
     {
         return false;
     }
     return true;
 }
 
-bool Server::reading()
+bool Server::reading(SOCKET param)
 {
-    if((read_write=recv(read_write,buffer,sizeof(buffer),0))<0)
+    if((read_write=recv(param,buffer,sizeof(buffer),0))<0)
     {
         return false;
     }
@@ -107,5 +107,52 @@ bool Server::getListenFlag()
 {
     return listenFlag;
 }
+
+unsigned long long Server::getConnectionClientCount()
+{
+    return this->socketList.size();
+}
+
+
+bool Server::Request()
+{
+    for(int a=0;a<socketList.size();++a)
+    {
+        if(writing(socketList[a]))
+        {
+            if(this->buffer=="200")
+            {
+                if(reading(socketList[a]))
+                {
+                   Response();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+}
+
+bool Server::Response()
+{
+    for (int i = 0; i <socketList.size(); ++i)
+    {
+        writing(socketList[i]);
+    }
+}
+
 
 #endif

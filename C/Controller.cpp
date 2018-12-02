@@ -35,14 +35,9 @@
         return this->server->getListenFlag();
     }
 
-    bool Controller::read()
+    bool Controller::read_write()
     {
-        return server->reading();
-    }
-
-    bool Controller::write()
-    {
-        return server->writing();
+        return this->server->Request();
     }
 
     bool Controller::start()

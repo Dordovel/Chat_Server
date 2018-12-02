@@ -71,9 +71,9 @@ void Server::listenning()
     listenFlag = true;
 }
 
-bool Server::reading()
+bool Server::reading(SOCKET param)
 {
-    if ( SOCKET_ERROR == recv( read_write, buffer, 20, 0 ) )
+    if ( SOCKET_ERROR == recv( param, buffer, 20, 0 ) )
     {
         error_code=WSAGetLastError();
         closesocket( read_write );
@@ -83,15 +83,16 @@ bool Server::reading()
     return true;
 }
 
-bool Server::writing()
+bool Server::writing(SOCKET param, char* message)
 {
-    for(int a=0; a<socketList.size();a++)
-    {
-        if (SOCKET_ERROR == send(socketList[a], buffer, 20, 0))
+        if (SOCKET_ERROR == send(param, message, 20, 0))
         {
             error_code = WSAGetLastError();
+            closesocket(param);
+
+            return false;
         }
-    }
+
     return true;
 }
 
@@ -119,6 +120,54 @@ char *Server::getMessage()
 bool Server::getListenFlag()
 {
     return listenFlag;
+}
+
+unsigned long long Server::getConnectionClientCount()
+{
+    return this->socketList.size();
+}
+
+bool Server::Request()
+{
+    for(int a=0;a<socketList.size();++a)
+    {
+        if(writing(socketList[a],(char*)"request"))
+        {
+            if(reading(socketList[a]))
+            {
+                std::cout<<buffer<<std::endl;
+
+                if (this->buffer == (char*)"200")
+                {
+                    continue;
+                }
+                else
+                {
+                    std::cout<<"Response"<<std::endl;
+                    Response();
+                }
+
+            }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+bool Server::Response()
+{
+    for (int i = 0; i <socketList.size(); ++i)
+    {
+        writing(socketList[i],buffer);
+    }
 }
 
 #endif

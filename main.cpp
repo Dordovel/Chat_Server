@@ -2,6 +2,8 @@
 
 #include "C/Controller.h"
 #include <pthread.h>
+#include <chrono>
+#include <thread>
 
 #if (__linux__)
 
@@ -57,13 +59,12 @@ int main()
 
                 while (true)
                 {
-                    if (controller->read())
+                    if (controller->read_write())
                     {
                         std::cout << "New Message  ";
                         controller->printMessage();
-
-                        controller->write();
                     }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 }
             }
         }

@@ -5,13 +5,6 @@
 #ifndef UNTITLED1_SERVER_H
 #define UNTITLED1_SERVER_H
 
-#include <iostream>
-#include "../Interface/IServer.h"
-#include <vector>
-
-using namespace std;
-
-
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <ws2tcpip.h>
@@ -27,6 +20,13 @@ using namespace std;
 
 
 #endif
+
+
+#include <iostream>
+#include "../Interface/IServer.h"
+#include <vector>
+
+using namespace std;
 
     class Server: public IServer
     {
@@ -58,15 +58,21 @@ using namespace std;
 
                 void listenning() override;
 
-                bool reading() override;
+                bool reading(SOCKET param);
 
-                bool writing() override;
+                bool writing(SOCKET param,char* message);
 
                 int getErrorCode() override;
 
                 char * getMessage() override;
 
                 bool getListenFlag() override;
+
+                bool Response();
+
+                bool Request();
+
+                unsigned long long getConnectionClientCount() override;
     };
 
 

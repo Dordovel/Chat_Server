@@ -5,6 +5,7 @@
 #ifndef UNTITLED1_ISERVER_H
 #define UNTITLED1_ISERVER_H
 
+
 class IServer
 {
 
@@ -14,9 +15,7 @@ public:
 
     virtual void listenning()=0;
 
-    virtual bool reading()=0;
-
-    virtual bool writing()=0;
+    virtual bool Request()=0;
 
     virtual bool startServer()=0;
 
@@ -25,6 +24,8 @@ public:
     virtual char * getMessage()=0;
 
     virtual bool getListenFlag()=0;
+
+    virtual unsigned long long getConnectionClientCount()=0;
 
 };
 
