@@ -17,10 +17,12 @@ public:
     {
         Controller * controller = (Controller*) param;
 
-        while(true)
+        while(controller->getServerStatus())
         {
             controller->listen();
         }
+
+        pthread_exit(0);
     }
 
 };

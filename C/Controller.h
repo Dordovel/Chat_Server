@@ -14,6 +14,7 @@ class Controller
     private:
         IServer * server;
         IView * view;
+        bool serverStatus;
 
     public:
         Controller(IServer *,IView *);
@@ -27,6 +28,7 @@ class Controller
         void printMessage();
         void printErrorCode();
         bool getListenFlag();
+        bool getServerStatus();
 };
 
 
