@@ -49,22 +49,28 @@ void Server::listenning()
 {
 
     if((error_code=listen(sock,SOMAXCONN))<0)
+        {
+                listenFlag=false;
+                return;
+        }
 
     else
     {
         if((read_write=accept(sock,(struct sockaddr *)&addr_in,(socklen_t*) &sizeAddr_in))<0)
         {
             error_code = read_write;
+            listenFlag=false;
+            return;
         }
 
         else
         {
-            listenFlag=false;
+            socketList.push_back(read_write);
+
+            listenFlag=true;
         }
 
     }
-
-    listenFlag=true;
 
 }
 
