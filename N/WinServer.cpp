@@ -131,34 +131,23 @@ bool Server::Request()
 {
     for(int a=0;a<socketList.size();++a)
     {
-        if(writing(socketList[a],(char*)"request"))
+        if (writing(socketList[a], (char *) "request"))
         {
-            if(reading(socketList[a]))
+            if (reading(socketList[a]))
             {
-                std::cout<<buffer<<std::endl;
+                std::cout << buffer << std::endl;
 
-                if (this->buffer == (char*)"200")
-                {
-                    continue;
-                }
-                else
-                {
-                    std::cout<<"Response"<<std::endl;
-                    Response();
-                }
-
-            }
-                else
+                if (!strcmp(this->buffer, "200"))
                 {
                     return false;
                 }
-            }
-            else
-            {
-                return false;
+                else
+                {
+                    return Response();
+                }
             }
         }
-
+    }
         return true;
     }
 

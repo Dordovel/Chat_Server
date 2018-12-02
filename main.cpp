@@ -61,7 +61,6 @@ int main()
                 {
                     if (controller->read_write())
                     {
-                        std::cout << "New Message  ";
                         controller->printMessage();
                     }
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
