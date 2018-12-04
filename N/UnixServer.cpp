@@ -77,9 +77,9 @@ void Server::listenning()
 
 }
 
-bool Server::writing(SOCKET param)
+bool Server::writing(SOCKET param,char* message)
 {
-    if ((read_write=send(param,buffer, sizeof(buffer),0))<0)
+    if ((read_write=send(param,message, sizeof(message),0))<0)
     {
         return false;
     }
@@ -125,7 +125,6 @@ bool Server::Request()
         {
             if(reading(socketList[a]))
             {
-                std::cout<<buffer<<std::endl;
 
                 if (!strcmp(this->buffer,"200"))
                 {
@@ -153,10 +152,11 @@ bool Server::Request()
 
 bool Server::Response()
 {
-    for (int i = 0; i <socketList.size(); ++i)
+    for (int i = 0; i < socketList.size(); ++i)
     {
-        writing(socketList[i],buffer);
+        writing(socketList[i], buffer);
     }
+}
 
 
 #endif

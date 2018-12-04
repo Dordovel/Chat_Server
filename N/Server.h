@@ -25,6 +25,7 @@
 #include <iostream>
 #include "../Interface/IServer.h"
 #include <vector>
+#include<cstring>
 
 using namespace std;
 
