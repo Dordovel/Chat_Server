@@ -33,7 +33,7 @@ bool Server::startServer()
 
 }
 
-bool Server::binding()
+bool Server::bind()
 {
     if((error_code=bind(sock,(struct sockaddr *)&addr_in,sizeAddr_in))<0)
     {

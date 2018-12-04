@@ -57,7 +57,7 @@ using namespace std;
 
                 bool startServer() override;
 
-                bool binding() override;
+                bool bind() override;
 
                 bool listenning() override;
 

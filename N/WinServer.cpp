@@ -38,7 +38,7 @@ bool Server::startServer()
     return true;
 }
 
-bool Server::binding()
+bool Server::bind()
 {
     if ( SOCKET_ERROR == ( bind( sock, ( sockaddr* ) &addr_in, sizeAddr_in ) ) )
     {
