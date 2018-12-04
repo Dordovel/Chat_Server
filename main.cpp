@@ -64,7 +64,6 @@ int main()
                 std::cout<<"Count  "<<controller->getConnectionClientCount()<<std::endl;
 
                 pthread_create(&thread, &attr, Thread::listen, controller);
-                pthread_detach(thread);
 
                 while (true)
                 {

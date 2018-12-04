@@ -150,7 +150,7 @@ bool Server::Response()
 
 void Server::getClientProperties()
 {
-    std::cout<<"Connection client->"<<client_addr.sin_addr.S_un.S_addr<<"   "<<client_addr.sin_port<<std::endl;
+    std::cout<<client_addr.sin_addr.S_un.S_addr<<"   "<<client_addr.sin_port<<std::endl;
 }
 
 #endif
