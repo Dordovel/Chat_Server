@@ -49,14 +49,13 @@ bool Server::binding()
     return true;
 }
 
-void Server::listenning()
+bool Server::listenning()
 {
     if ( SOCKET_ERROR==listen( sock, SOMAXCONN ) )
     {
         error_code=WSAGetLastError();
         closesocket( sock );
-        listenFlag=false;
-        return;
+        return false;
     }
     else
     {
@@ -65,18 +64,21 @@ void Server::listenning()
         {
             error_code=WSAGetLastError();
             closesocket( sock );
-            listenFlag=false;
-            return;
+            return false;
+
         }
         else
             {
-                getsockname(read_write,(sockaddr_in *)client_addr, sizeof(client_addr));
+                int size=sizeof(client_addr);
+
+                getsockname(read_write,(sockaddr *)&client_addr, & size);
+
                 socketList.push_back(read_write);
+
+                return true;
             }
     }
 
-
-    listenFlag = true;
 }
 
 bool Server::reading(SOCKET param)
@@ -122,11 +124,6 @@ int Server::getErrorCode() {
 char *Server::getMessage()
 {
     return buffer;
-}
-
-bool Server::getListenFlag()
-{
-    return listenFlag;
 }
 
 unsigned long long Server::getConnectionClientCount()

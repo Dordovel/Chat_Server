@@ -15,7 +15,7 @@ public:
 
     virtual bool binding()=0;
 
-    virtual void listenning()=0;
+    virtual bool listenning()=0;
 
     virtual bool Request()=0;
 
@@ -24,8 +24,6 @@ public:
     virtual int getErrorCode()=0;
 
     virtual char * getMessage()=0;
-
-    virtual bool getListenFlag()=0;
 
     virtual unsigned long long getConnectionClientCount()=0;
 

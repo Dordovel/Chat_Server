@@ -18,17 +18,25 @@ class Controller
 
     public:
         Controller(IServer *,IView *);
+
         ~Controller();
 
         bool bind();
-        void listen();
+
+        bool listen();
+
         bool read_write();
+
         bool start();
+
         void printMessage();
+
         void printErrorCode();
-        bool getListenFlag();
+
         bool getServerStatus();
+
         int getConnectionClientCount();
+
         bool Request();
 };
 

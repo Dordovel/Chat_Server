@@ -60,7 +60,7 @@ using namespace std;
 
                 bool binding() override;
 
-                void listenning() override;
+                bool listenning() override;
 
                 bool reading(SOCKET param);
 
@@ -69,8 +69,6 @@ using namespace std;
                 int getErrorCode() override;
 
                 char * getMessage() override;
-
-                bool getListenFlag() override;
 
                 bool Response();
 

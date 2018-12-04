@@ -42,13 +42,12 @@ bool Server::binding()
     return true;
 }
 
-void Server::listenning()
+bool Server::listenning()
 {
 
     if((error_code=listen(sock,SOMAXCONN))<0)
         {
-                listenFlag=false;
-                return;
+                return false;
         }
 
     else
@@ -56,17 +55,18 @@ void Server::listenning()
         if((read_write=accept(sock,(struct sockaddr *)&addr_in,(socklen_t*) &sizeAddr_in))<0)
         {
             error_code = read_write;
-            listenFlag=false;
-            return;
+            return false;
         }
 
         else
         {
+            int size=sizeof(client_addr);
+
+            getsockname(read_write,(sockaddr *)&client_addr, & size);
+
             socketList.push_back(read_write);
 
-            getsockname(sock,(sockaddr_in *)client_addr, sizeof(client_addr));
-
-            listenFlag=true;
+            return true;
         }
 
     }

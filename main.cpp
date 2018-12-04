@@ -55,9 +55,7 @@ int main()
         {
             std::cout<<"Waiting to connect..."<<std::endl;
 
-            controller->listen();
-
-            if (controller->getListenFlag())
+            if (controller->listen())
             {
 
                 pthread_create(&thread, &attr, Thread::listen, controller);

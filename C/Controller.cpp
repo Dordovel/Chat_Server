@@ -25,16 +25,11 @@
         return server->binding();
     }
 
-    void Controller::listen()
+    bool Controller::listen()
     {
        this->server->listenning();
 
        this->server->getClientProperties();
-    }
-
-    bool Controller::getListenFlag()
-    {
-        return this->server->getListenFlag();
     }
 
     bool Controller::read_write()
