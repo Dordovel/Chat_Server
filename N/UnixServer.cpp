@@ -34,18 +34,12 @@ bool Server::startServer()
 
 bool Server::binding()
 {
-    bool flag= false;
-
     if((error_code=bind(sock,(struct sockaddr *)&addr_in,sizeAddr_in))<0)
     {
-
+        return false;
     }
-    else
-        {
-            flag = true;
-        }
 
-    return flag;
+    return true;
 }
 
 void Server::listenning()
