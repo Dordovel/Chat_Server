@@ -109,11 +109,14 @@ bool Server::writing(SOCKET param, char* message)
 
 Server::~Server()
 {
+
     closesocket( sock );
+
     for(int a=0;a<socketList.size();a++)
     {
         closesocket(socketList[a]);
     }
+
     WSACleanup();
 
 }

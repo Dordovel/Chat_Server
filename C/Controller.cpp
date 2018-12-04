@@ -60,3 +60,8 @@
     {
         this->server->getClientProperties();
     }
+
+    int Controller::getConnectionClientCount()
+    {
+        return this->server->getConnectionClientCount();
+    }

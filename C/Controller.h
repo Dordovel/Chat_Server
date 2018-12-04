@@ -40,6 +40,8 @@ class Controller
         void getClientPropirties();
 
         bool Request();
+
+        bool serverStop();
 };
 
 

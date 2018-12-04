@@ -61,10 +61,15 @@ int main()
             {
                 controller->getClientPropirties();
 
+                std::cout<<"Count  "<<controller->getConnectionClientCount()<<std::endl;
+
                 pthread_create(&thread, &attr, Thread::listen, controller);
+                pthread_detach(thread);
 
                 while (true)
                 {
+                    if(controller->getConnectionClientCount()<=0)break;
+
                     if (controller->read_write())
                     {
                         controller->printMessage();
@@ -75,6 +80,7 @@ int main()
         }
     }
 
+    std::cout<<"Error code   ";
     controller->printErrorCode();
 
     delete controller;

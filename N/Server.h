@@ -44,8 +44,6 @@ using namespace std;
 
                 sockaddr_in client_addr;
 
-                bool listenFlag;
-
                 SOCKET read_write;
 
                 std::vector<SOCKET> socketList;
