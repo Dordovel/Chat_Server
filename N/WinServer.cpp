@@ -4,7 +4,11 @@
 #ifdef _WIN32
 
 #include "Server.h"
-Server::Server() = default;
+Server::Server(int port)
+{
+    this->port=port;
+};
+
 
 bool Server::startServer()
 {
@@ -95,7 +99,6 @@ bool Server::writing(SOCKET param, char* message)
 
     return true;
 }
-
 
 Server::~Server()
 {

@@ -11,6 +11,8 @@ class IServer
 
 public:
 
+    virtual ~IServer(){};
+
     virtual bool binding()=0;
 
     virtual void listenning()=0;

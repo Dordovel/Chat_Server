@@ -35,7 +35,7 @@ using namespace std;
                 WSADATA data;
                 SOCKET sock;
                 sockaddr_in addr_in;
-                int port = 6000;
+                int port;
                 int sizeAddr_in = sizeof(addr_in);
                 char buffer[20];
                 long error_code=0;
@@ -48,9 +48,9 @@ using namespace std;
 
         public:
 
-                Server();
+                Server(int port);
 
-                ~Server();
+                ~Server() override;
 
                 bool startServer() override;
 

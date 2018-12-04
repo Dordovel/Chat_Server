@@ -39,7 +39,7 @@ int main()
 
 #endif
 
-    Controller *controller=new Controller(new Server(),new View());
+    Controller *controller=new Controller(new Server(6000),new View());
 
     pthread_t thread;
     pthread_attr_t attr;

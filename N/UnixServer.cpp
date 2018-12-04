@@ -6,7 +6,10 @@
 
 #include "Server.h"
 
-Server::Server()= default;
+Server::Server(int port)
+{
+    this->port=port;
+};
 
 bool Server::startServer()
 {
