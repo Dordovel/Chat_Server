@@ -19,6 +19,7 @@ bool Server::startServer()
     if(sock<0)
     {
         error_code = sock;
+        close(sock);
         return false;
     }
     else
@@ -36,6 +37,7 @@ bool Server::binding()
 {
     if((error_code=bind(sock,(struct sockaddr *)&addr_in,sizeAddr_in))<0)
     {
+        close(sock);
         return false;
     }
 
@@ -47,7 +49,8 @@ bool Server::listenning()
 
     if((error_code=listen(sock,SOMAXCONN))<0)
         {
-                return false;
+          close(sock);
+          return false;
         }
 
     else
@@ -55,6 +58,7 @@ bool Server::listenning()
         if((read_write=accept(sock,(struct sockaddr *)&addr_in,(socklen_t*) &sizeAddr_in))<0)
         {
             error_code = read_write;
+            close(sock);
             return false;
         }
 
@@ -91,7 +95,8 @@ bool Server::reading(SOCKET param)
     return true;
 }
 
-int Server::getErrorCode() {
+int Server::getErrorCode()
+{
     return error_code;
 }
 char *Server::getMessage()
@@ -100,7 +105,16 @@ char *Server::getMessage()
 }
 
 
-Server::~Server() {}
+Server::~Server()
+{
+    close( sock );
+    close(read_write);
+
+    for(int a=0;a<socketList.size();a++)
+    {
+        close(socketList[a]);
+    }
+}
 
 
 unsigned long long Server::getConnectionClientCount()
@@ -133,7 +147,7 @@ bool Server::Request()
                 std::cout<<"Delete Client ";
                 this->getClientProperties();
 
-                closesocket(socketList[a]);
+                close(socketList[a]);
                 socketList.erase(socketList.begin()+a);
         }
     }
@@ -150,7 +164,7 @@ bool Server::Response()
 
 void Server::getClientProperties()
 {
-    std::cout<<client_addr.sin_addr.S_un.S_addr<<"   "<<client_addr.sin_port<<std::endl;
+    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port<<std::endl;
 }
 
 #endif
