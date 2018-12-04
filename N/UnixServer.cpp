@@ -60,9 +60,9 @@ bool Server::listenning()
 
         else
         {
-            int size=sizeof(client_addr);
+            socklen_t size=sizeof(client_addr);
 
-            getsockname(read_write,(sockaddr *)&client_addr, & size);
+            getsockname(read_write,(sockaddr *)&client_addr,& size);
 
             socketList.push_back(read_write);
 
@@ -102,10 +102,6 @@ char *Server::getMessage()
 
 Server::~Server() {}
 
-bool Server::getListenFlag()
-{
-    return listenFlag;
-}
 
 unsigned long long Server::getConnectionClientCount()
 {
