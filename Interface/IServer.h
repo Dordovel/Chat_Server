@@ -29,6 +29,8 @@ public:
 
     virtual unsigned long long getConnectionClientCount()=0;
 
+    virtual void getClientProperties()=0;
+
 };
 
 

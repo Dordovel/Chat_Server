@@ -11,8 +11,9 @@
 
 
 #elif __linux__
-#include <sys/socket.h>
 
+#include <sys/socket.h>
+#include <netdb.h>
 #include <netinet/in.h>
 
 #define WSADATA void*
@@ -40,6 +41,8 @@ using namespace std;
                 int sizeAddr_in = sizeof(addr_in);
                 char buffer[20];
                 long error_code=0;
+
+                sockaddr_in client_addr;
 
                 bool listenFlag;
 
@@ -74,7 +77,16 @@ using namespace std;
                 bool Request();
 
                 unsigned long long getConnectionClientCount() override;
+
+        void getClientProperties() override;
+
+        void get
     };
+
+void Server::getClientProperties()
+{
+    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port;
+}
 
 
 #endif //UNTITLED1_SERVER_H

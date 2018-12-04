@@ -39,7 +39,7 @@ int main()
 
 #endif
 
-    Controller *controller=new Controller(new Server(5000),new View());
+    Controller *controller=new Controller(new Server(7000),new View());
 
     pthread_t thread;
     pthread_attr_t attr;
@@ -59,7 +59,6 @@ int main()
 
             if (controller->getListenFlag())
             {
-                std::cout<<"New Connection"<<std::endl;
 
                 pthread_create(&thread, &attr, Thread::listen, controller);
 

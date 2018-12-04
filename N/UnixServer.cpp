@@ -64,6 +64,8 @@ void Server::listenning()
         {
             socketList.push_back(read_write);
 
+            getsockname(sock,(sockaddr_in *)client_addr, sizeof(client_addr));
+
             listenFlag=true;
         }
 

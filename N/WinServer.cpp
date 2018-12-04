@@ -68,9 +68,13 @@ void Server::listenning()
             listenFlag=false;
             return;
         }
+        else
+            {
+                getsockname(read_write,(sockaddr_in *)client_addr, sizeof(client_addr));
+                socketList.push_back(read_write);
+            }
     }
 
-    socketList.push_back(read_write);
 
     listenFlag = true;
 }

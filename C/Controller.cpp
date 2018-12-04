@@ -28,6 +28,8 @@
     void Controller::listen()
     {
        this->server->listenning();
+
+       this->server->getClientProperties();
     }
 
     bool Controller::getListenFlag()
