@@ -78,15 +78,9 @@ using namespace std;
 
                 unsigned long long getConnectionClientCount() override;
 
-        void getClientProperties() override;
-
-        void get
+                void getClientProperties() override;
     };
 
-void Server::getClientProperties()
-{
-    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port;
-}
 
 
 #endif //UNTITLED1_SERVER_H

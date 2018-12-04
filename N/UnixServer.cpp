@@ -155,4 +155,9 @@ bool Server::Response()
 }
 
 
+void Server::getClientProperties()
+{
+    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port;
+}
+
 #endif
