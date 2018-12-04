@@ -126,21 +126,18 @@ bool Server::Request()
                 {
                     Response();
                 }
-
-            }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
         }
-
-        return true;
     }
+    else
+        {
+                std::cout<<"Delete Client ";
+                this->getClientProperties();
+
+                closesocket(socketList[a]);
+                socketList.erase(socketList.begin()+a);
+        }
+    }
+}
 
 bool Server::Response()
 {
@@ -153,7 +150,7 @@ bool Server::Response()
 
 void Server::getClientProperties()
 {
-    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port;
+    std::cout<<"Connection client->"<<client_addr.sin_addr.S_un.S_addr<<"   "<<client_addr.sin_port<<std::endl;
 }
 
 #endif

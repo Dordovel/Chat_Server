@@ -27,9 +27,7 @@
 
     bool Controller::listen()
     {
-       this->server->listenning();
-
-       this->server->getClientProperties();
+        return this->server->listenning();
     }
 
     bool Controller::read_write()
@@ -56,4 +54,9 @@
     bool Controller::getServerStatus()
     {
         return this->serverStatus;
+    }
+
+    void Controller::getClientPropirties()
+    {
+        this->server->getClientProperties();
     }

@@ -22,6 +22,8 @@ public:
         while(controller->getServerStatus())
         {
             controller->listen();
+
+            controller->getClientPropirties();
         }
 
         pthread_exit(0);
@@ -39,7 +41,7 @@ int main()
 
 #endif
 
-    Controller *controller=new Controller(new Server(7000),new View());
+    Controller *controller=new Controller(new Server(6000),new View());
 
     pthread_t thread;
     pthread_attr_t attr;
@@ -57,6 +59,7 @@ int main()
 
             if (controller->listen())
             {
+                controller->getClientPropirties();
 
                 pthread_create(&thread, &attr, Thread::listen, controller);
 

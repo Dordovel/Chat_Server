@@ -37,6 +37,8 @@ class Controller
 
         int getConnectionClientCount();
 
+        void getClientPropirties();
+
         bool Request();
 };
 

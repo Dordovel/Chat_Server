@@ -3,6 +3,7 @@
 //
 #ifdef _WIN32
 
+#include <inaddr.h>
 #include "Server.h"
 Server::Server(int port)
 {
@@ -139,7 +140,6 @@ bool Server::Request()
         {
             if (reading(socketList[a]))
             {
-                std::cout << buffer << std::endl;
 
                 if (!strcmp(this->buffer, "200"))
                 {
@@ -147,13 +147,24 @@ bool Server::Request()
                 }
                 else
                 {
+                    std::cout<<"Data "<<buffer<<std::endl;
+
                     return Response();
                 }
+
             }
-        }
+        } else
+            {
+
+                std::cout<<"Delete Client ";
+                this->getClientProperties();
+
+                closesocket(socketList[a]);
+                socketList.erase(socketList.begin()+a);
+            }
+
     }
-        return true;
-    }
+}
 
 bool Server::Response()
 {
@@ -166,7 +177,7 @@ bool Server::Response()
 
 void Server::getClientProperties()
 {
-    std::cout<<client_addr.sin_addr.s_addr<<"   "<<client_addr.sin_port;
+    std::cout<<"Connection client->"<<client_addr.sin_addr.S_un.S_addr<<"   "<<client_addr.sin_port<<std::endl;
 }
 
 #endif
