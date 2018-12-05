@@ -61,8 +61,6 @@ int main()
             {
                 controller->getClientPropirties();
 
-                std::cout<<"Count  "<<controller->getConnectionClientCount()<<std::endl;
-
                 pthread_create(&thread, &attr, Thread::listen, controller);
 
                 while (true)
