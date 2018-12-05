@@ -22,7 +22,7 @@
 
     bool Controller::bind()
     {
-        return server->bind();
+        return this->server->binding();
     }
 
     bool Controller::listen()

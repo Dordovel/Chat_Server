@@ -57,7 +57,7 @@ using namespace std;
 
                 bool startServer() override;
 
-                bool bind() override;
+                bool binding() override;
 
                 bool listenning() override;
 
@@ -69,7 +69,7 @@ using namespace std;
 
                 char * getMessage() override;
 
-                bool Response();
+                void Response();
 
                 bool Request();
 

@@ -33,7 +33,7 @@ bool Server::startServer()
 
 }
 
-bool Server::bind()
+bool Server::binding()
 {
     if((error_code=bind(sock,(struct sockaddr *)&addr_in,sizeAddr_in))<0)
     {
@@ -127,37 +127,41 @@ bool Server::Request()
 {
     for(int a=0;a<socketList.size();++a)
     {
-        if(writing(socketList[a],(char*)"request"))
+        if (writing(socketList[a], (char *) "request"))
         {
-            if(reading(socketList[a]))
+            if (reading(socketList[a]))
             {
-
-                if (!strcmp(this->buffer,"200"))
-                {
-                    return false;
-                }
-                else
+                if (strcmp(this->buffer, "200"))
                 {
                     Response();
                 }
-        }
-    }
-    else
-        {
-                std::cout<<"Delete Client ";
-                this->getClientProperties();
+            }
 
-                close(socketList[a]);
-                socketList.erase(socketList.begin()+a);
+        }
+        else
+        {
+            std::cout << "Delete Client ";
+            this->getClientProperties();
+
+            close(socketList[a]);
+            socketList.erase(socketList.begin() + a);
         }
     }
+
+    return true;
+
 }
 
-bool Server::Response()
+void Server::Response()
 {
     for (int i = 0; i < socketList.size(); ++i)
     {
-        writing(socketList[i], buffer);
+       if(!writing(socketList[i], buffer))
+       {
+           std::cout<<"Error\t";
+           this->getClientProperties();
+       }
+
     }
 }
 

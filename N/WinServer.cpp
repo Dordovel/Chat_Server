@@ -38,7 +38,7 @@ bool Server::startServer()
     return true;
 }
 
-bool Server::bind()
+bool Server::binding()
 {
     if ( SOCKET_ERROR == ( bind( sock, ( sockaddr* ) &addr_in, sizeAddr_in ) ) )
     {
@@ -171,11 +171,11 @@ bool Server::Request()
     }
 }
 
-bool Server::Response()
+void Server::Response()
 {
     for (int i = 0; i <socketList.size(); ++i)
     {
-        writing(socketList[i],buffer);
+        if(writing(socketList[i],buffer);
     }
 }
 

@@ -12,6 +12,8 @@ class View: public IView
 {
     public:
 
+        ~View();
+
         void printMessage(char* message) override;
 
 };

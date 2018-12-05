@@ -10,6 +10,7 @@ class IView
 {
 public:
     virtual void printMessage(char* message)=0;
+    virtual ~IView(){};
 };
 
 

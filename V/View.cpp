@@ -4,7 +4,7 @@
 
 #include "View.h"
 
-
+View::~View() {}
 
 void View::printMessage(char * message)
 {

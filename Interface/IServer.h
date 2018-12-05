@@ -13,7 +13,7 @@ public:
 
     virtual ~IServer(){};
 
-    virtual bool bind()=0;
+    virtual bool binding()=0;
 
     virtual bool listenning()=0;
 
