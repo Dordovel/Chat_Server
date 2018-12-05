@@ -125,7 +125,7 @@ unsigned long long Server::getConnectionClientCount()
 
 bool Server::Request()
 {
-    for(int a=0;a<socketList.size();++a)
+    for(unsigned int a=0;a<socketList.size();++a)
     {
         if (writing(socketList[a], (char *) "request"))
         {
@@ -154,7 +154,7 @@ bool Server::Request()
 
 void Server::Response()
 {
-    for (int i = 0; i < socketList.size(); ++i)
+    for (unsigned int i = 0; i < socketList.size(); ++i)
     {
        if(!writing(socketList[i], buffer))
        {

@@ -139,43 +139,43 @@ unsigned long long Server::getConnectionClientCount()
 
 bool Server::Request()
 {
-    for(int a=0;a<socketList.size();++a)
+    for(unsigned int a=0;a<socketList.size();++a)
     {
         if (writing(socketList[a], (char *) "request"))
         {
             if (reading(socketList[a]))
             {
-
-                if (!strcmp(this->buffer, "200"))
+                if (strcmp(this->buffer, "200"))
                 {
-                    return false;
+                    Response();
                 }
-                else
-                {
-                    std::cout<<"Data "<<buffer<<std::endl;
-
-                    return Response();
-                }
-
-            }
-        } else
-            {
-
-                std::cout<<"Delete Client ";
-                this->getClientProperties();
-
-                closesocket(socketList[a]);
-                socketList.erase(socketList.begin()+a);
             }
 
+        }
+        else
+        {
+            std::cout << "Delete Client ";
+            this->getClientProperties();
+
+            closesocket( socketList[a] );
+            socketList.erase(socketList.begin() + a);
+        }
     }
+
+    return true;
+
 }
 
 void Server::Response()
 {
-    for (int i = 0; i <socketList.size(); ++i)
+    for (unsigned int i = 0; i < socketList.size(); ++i)
     {
-        if(writing(socketList[i],buffer);
+       if(!writing(socketList[i], buffer))
+       {
+           std::cout<<"Error\t";
+           this->getClientProperties();
+       }
+
     }
 }
 
