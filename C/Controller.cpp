@@ -43,7 +43,10 @@
 
     void Controller::printMessage()
     {
-        view->printMessage(server->getMessage());
+        if(strcmp(this->server->getMessage(),"200"))
+        {
+            view->printMessage(server->getMessage());
+        }
     }
 
     void Controller::printErrorCode()
