@@ -110,7 +110,7 @@ Server::~Server()
     close( sock );
     close(read_write);
 
-    for(int a=0;a<socketList.size();a++)
+    for(unsigned int a=0;a<socketList.size();a++)
     {
         close(socketList[a]);
     }

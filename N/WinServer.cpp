@@ -112,9 +112,7 @@ Server::~Server()
 
     closesocket( sock );
 
-    close(read_write);
-
-    for(int a=0;a<socketList.size();a++)
+    for(unsigned int a=0;a<socketList.size();a++)
     {
         closesocket(socketList[a]);
     }
