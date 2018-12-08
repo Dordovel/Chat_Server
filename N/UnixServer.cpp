@@ -79,18 +79,36 @@ bool Server::listenning()
 
 bool Server::writing(SOCKET param,char* message)
 {
-    if ((read_write=send(param,message, sizeof(message),0))<0)
+
+    if(FD_ISSET(param,&write_set))
     {
-        return false;
+        FD_CLR(param, &write_set);
+
+
+        if (strcmp(message, "200") ) {
+            std::cout << message << std::endl;
+        }
+
+
+        if ((read_write = send(param, message, sizeof(message), 0)) < 0)
+        {
+            return false;
+        }
     }
     return true;
 }
 
 bool Server::reading(SOCKET param)
 {
-    if((read_write=recv(param,buffer,sizeof(buffer),0))<0)
+    if(FD_ISSET(param,&read_set))
     {
-        return false;
+        FD_CLR(param, &read_set);
+
+        if ((read_write = recv(param, buffer, sizeof(buffer), 0)) < 0)
+        {
+            return false;
+        }
+
     }
     return true;
 }
@@ -127,6 +145,17 @@ bool Server::Request()
 {
     for(unsigned int a=0;a<socketList.size();++a)
     {
+        FD_ZERO(&write_set);
+        FD_ZERO(&read_set);
+
+        FD_SET(socketList[a],&read_set);
+        FD_SET(socketList[a],&write_set);
+
+        if(select(FD_SETSIZE,&read_set,&write_set,NULL,&time)<0)
+        {
+            continue;
+        }
+
         if (writing(socketList[a], (char *) "request"))
         {
             if (reading(socketList[a]))
@@ -154,14 +183,13 @@ bool Server::Request()
 
 void Server::Response()
 {
+
     for (unsigned int i = 0; i < socketList.size(); ++i)
     {
-       if(!writing(socketList[i], buffer))
+        if(!writing(socketList[i], buffer))
        {
-           std::cout<<"Error\t";
            this->getClientProperties();
        }
-
     }
 }
 

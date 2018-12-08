@@ -47,6 +47,10 @@ using namespace std;
 
                 SOCKET read_write;
 
+                fd_set set,read_set,write_set;
+
+                struct timeval time;
+
                 std::vector<SOCKET> socketList;
 
         public:

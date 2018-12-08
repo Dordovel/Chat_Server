@@ -8,5 +8,5 @@ View::~View() {}
 
 void View::printMessage(char * message)
 {
-    std::cout<<message<<std::endl;
+    std::cout<<"Data: "<<message<<std::endl;
 }
