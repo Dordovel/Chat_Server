@@ -33,6 +33,8 @@ bool Server::startServer()
 
 }
 
+
+
 bool Server::binding()
 {
     if((error_code=bind(sock,(struct sockaddr *)&addr_in,sizeAddr_in))<0)
@@ -43,6 +45,8 @@ bool Server::binding()
 
     return true;
 }
+
+
 
 bool Server::listenning()
 {
@@ -77,26 +81,23 @@ bool Server::listenning()
 
 }
 
+
+
 bool Server::writing(SOCKET param,char* message)
 {
-
     if(FD_ISSET(param,&write_set))
     {
         FD_CLR(param, &write_set);
 
-
-        if (strcmp(message, "200") ) {
-            std::cout << message << std::endl;
-        }
-
-
-        if ((read_write = send(param, message, sizeof(message), 0)) < 0)
+        if ((error_code = send(param, message, sizeof(message), 0)) < 0)
         {
             return false;
         }
     }
     return true;
 }
+
+
 
 bool Server::reading(SOCKET param)
 {
@@ -104,7 +105,7 @@ bool Server::reading(SOCKET param)
     {
         FD_CLR(param, &read_set);
 
-        if ((read_write = recv(param, buffer, sizeof(buffer), 0)) < 0)
+        if ((error_code = recv(param, buffer, sizeof(buffer), 0)) < 0)
         {
             return false;
         }
@@ -113,10 +114,14 @@ bool Server::reading(SOCKET param)
     return true;
 }
 
+
+
 int Server::getErrorCode()
 {
     return error_code;
 }
+
+
 char *Server::getMessage()
 {
     return buffer;
