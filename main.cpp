@@ -82,5 +82,5 @@ int main()
 
     delete controller;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
