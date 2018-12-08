@@ -84,18 +84,26 @@ bool Server::listenning()
 
 bool Server::reading(SOCKET param)
 {
-    if ( SOCKET_ERROR == recv( param, buffer, 20, 0 ) )
+    if(FD_ISSET(param,&read_set))
     {
-        error_code=WSAGetLastError();
-        closesocket( read_write );
-        return false;
-    }
+        FD_CLR(param, &read_set);
 
+        if (SOCKET_ERROR == recv(param, buffer, 20, 0))
+        {
+            error_code = WSAGetLastError();
+            closesocket(read_write);
+            return false;
+        }
+    }
     return true;
 }
 
 bool Server::writing(SOCKET param, char* message)
 {
+    if(FD_ISSET(param,&write_set))
+    {
+        FD_CLR(param, &write_set);
+
         if (SOCKET_ERROR == send(param, message, 20, 0))
         {
             error_code = WSAGetLastError();
@@ -103,6 +111,7 @@ bool Server::writing(SOCKET param, char* message)
 
             return false;
         }
+    }
 
     return true;
 }
@@ -139,6 +148,17 @@ bool Server::Request()
 {
     for(unsigned int a=0;a<socketList.size();++a)
     {
+        FD_ZERO(&write_set);
+        FD_ZERO(&read_set);
+
+        FD_SET(socketList[a],&read_set);
+        FD_SET(socketList[a],&write_set);
+
+        if(select(FD_SETSIZE,&read_set,&write_set,NULL,&time)<0)
+        {
+            continue;
+        }
+
         if (writing(socketList[a], (char *) "request"))
         {
             if (reading(socketList[a]))
