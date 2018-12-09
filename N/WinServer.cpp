@@ -3,14 +3,13 @@
 //
 #ifdef _WIN32
 
-#include <inaddr.h>
-#include <chrono>
-#include <thread>
+
 #include "Server.h"
+
 Server::Server(int port)
 {
     this->port=port;
-    this->time.tv_sec=5;
+    this->time.tv_sec=15;
     this->time.tv_usec=0;
 };
 
@@ -90,36 +89,24 @@ bool Server::Request()
 {
     for(unsigned int a=0;a<socketList.size();++a)
     {
-        FD_ZERO(&write_set);
-        FD_ZERO(&read_set);
-
-        FD_SET(socketList[a], &read_set);
-        FD_SET(socketList[a], &write_set);
-
-        if (select(socketList.size(), &read_set, &write_set, NULL, &time) > 0)
-        {
-
-            if (writing(socketList[a], (char *) "request"))
+         if (writing(socketList[a], (char *) "request"))
             {
-                if (reading(socketList[a]))
-                {
+                if (reading(socketList[a])) {
                     if (strcmp(this->buffer, "200"))
                     {
                         Response();
                     }
                 }
             }
+            else
+                {
+                std::cout << "Delete Client ";
+                this->getClientProperties();
 
+                closesocket(socketList[a]);
+                socketList.erase(socketList.begin() + a);
+            }
         }
-        else
-            {
-            std::cout << "Delete Client ";
-            this->getClientProperties();
-
-            closesocket(socketList[a]);
-            socketList.erase(socketList.begin() + a);
-        }
-    }
 
     return true;
 
@@ -127,41 +114,49 @@ bool Server::Request()
 
 bool Server::reading(SOCKET param)
 {
-    if(FD_ISSET(param,&read_set))
-    {
-        FD_CLR(param, &read_set);
 
-        if (SOCKET_ERROR == recv(param, buffer, buffer_size, 0))
+    FD_ZERO(&set);
+
+    FD_SET(param, &set);
+
+    if (select(FD_SETSIZE,NULL,&set, NULL, &time) > 0)
+    {
+        if (FD_ISSET(param, &set))
         {
-            error_code = WSAGetLastError();
-            closesocket(param);
-            return false;
-        }
-    } else
-    {
-        return false;
-    }
+            FD_CLR(param, &set);
 
-    return true;
+
+            if (SOCKET_ERROR != recv(param, buffer, buffer_size, 0))
+            {
+                return true;
+            } else {
+                error_code = WSAGetLastError();
+                closesocket(param);
+            }
+        }
+    }
+    return false;
 }
 
 bool Server::writing(SOCKET param, char* message)
 {
-        if (SOCKET_ERROR == send(param, message, buffer_size, 0))
+    std::cout << "Response      " << message << std::endl;
+
+    if (SOCKET_ERROR != send(param, message, buffer_size, 0))
+    {
+        return true;
+    }
+    else
         {
-            error_code = WSAGetLastError();
-            closesocket(param);
+        error_code = WSAGetLastError();
+        closesocket(param);
+    }
 
-            return false;
-        }
-
-
-    return true;
+    return false;
 }
 
 Server::~Server()
 {
-
     closesocket( sock );
 
     for(unsigned int a=0;a<socketList.size();a++)

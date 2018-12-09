@@ -9,6 +9,9 @@
 
 #include <WinSock2.h>
 #include <ws2tcpip.h>
+#include <inaddr.h>
+#include <chrono>
+#include <thread>
 
 
 #elif __linux__
