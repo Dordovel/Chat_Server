@@ -131,7 +131,7 @@ bool Server::reading(SOCKET param)
     {
         FD_CLR(param, &read_set);
 
-        if (SOCKET_ERROR == recv(param, buffer, 20, 0))
+        if (SOCKET_ERROR == recv(param, buffer, buffer_size, 0))
         {
             error_code = WSAGetLastError();
             closesocket(param);
@@ -147,7 +147,7 @@ bool Server::reading(SOCKET param)
 
 bool Server::writing(SOCKET param, char* message)
 {
-        if (SOCKET_ERROR == send(param, message, 20, 0))
+        if (SOCKET_ERROR == send(param, message, buffer_size, 0))
         {
             error_code = WSAGetLastError();
             closesocket(param);

@@ -9,6 +9,9 @@
 Server::Server(int port)
 {
     this->port=port;
+
+    time.tv_sec=15;
+    time.tv_usec=0;
 };
 
 bool Server::startServer()
@@ -85,7 +88,9 @@ bool Server::listenning()
 
 bool Server::writing(SOCKET param,char* message)
 {
-        if ((error_code = send(param, message, sizeof(message), 0)) < 0)
+    std::cout<<"Response     "<<message<<std::endl;
+
+        if ((error_code = send(param, message, buffer_size, 0)) < 0)
         {
             return false;
         }
@@ -100,13 +105,13 @@ bool Server::reading(SOCKET param)
     FD_ZERO(&set);
     FD_SET(param,&set);
 
-    if(select(param+1,&set,NULL,NULL,&time)>0)
+    if(select(FD_SETSIZE,&set,NULL,NULL,&time)>0)
     {
         if(FD_ISSET(param,&set))
         {
             FD_CLR(param,&set);
 
-            if ((error_code = recv(param, buffer, sizeof(buffer), 0)) > 0)
+            if ((error_code = recv(param, buffer, buffer_size, 0)) > 0)
             {
                 return true;
             }

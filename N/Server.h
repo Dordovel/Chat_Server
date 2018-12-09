@@ -21,7 +21,6 @@
 #define WSADATA void*
 #define SOCKET int
 
-
 #endif
 
 
@@ -29,6 +28,8 @@
 #include "../Interface/IServer.h"
 #include <vector>
 #include<cstring>
+
+#define buffer_size 200
 
 using namespace std;
 
@@ -41,7 +42,7 @@ using namespace std;
                 sockaddr_in addr_in;
                 int port;
                 int sizeAddr_in = sizeof(addr_in);
-                char buffer[20];
+                char buffer[buffer_size];
                 long error_code=0;
 
                 sockaddr_in client_addr;
