@@ -85,21 +85,11 @@ bool Server::listenning()
 
 bool Server::writing(SOCKET param,char* message)
 {
-    if(FD_ISSET(param,&write_set))
-    {
-        FD_CLR(param, &write_set);
-
-        if ((error_code = send(param, message, sizeof(message), 0)) < 0)
-        {
-            return false;
-        }
-    }
-    else
-        {
-        std::cout<<"Writing Error"<<std::endl;
-        return false;
-    }
-    return true;
+       if ((error_code = send(param, message, sizeof(message), 0)) < 0)
+       {
+         return false;
+       }
+   return true;
 }
 
 
@@ -117,7 +107,6 @@ bool Server::reading(SOCKET param)
 
     } else
     {
-        std::cout<<"Read Error"<<std::endl;
         return false;
     }
     return true;

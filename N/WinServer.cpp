@@ -4,11 +4,13 @@
 #ifdef _WIN32
 
 #include <inaddr.h>
+#include <chrono>
+#include <thread>
 #include "Server.h"
 Server::Server(int port)
 {
     this->port=port;
-    this->time.tv_sec=10;
+    this->time.tv_sec=5;
     this->time.tv_usec=0;
 };
 
@@ -84,6 +86,45 @@ bool Server::listenning()
 
 }
 
+bool Server::Request()
+{
+    for(unsigned int a=0;a<socketList.size();++a)
+    {
+        FD_ZERO(&write_set);
+        FD_ZERO(&read_set);
+
+        FD_SET(socketList[a], &read_set);
+        FD_SET(socketList[a], &write_set);
+
+        if (select(socketList.size(), &read_set, &write_set, NULL, &time) > 0)
+        {
+
+            if (writing(socketList[a], (char *) "request"))
+            {
+                if (reading(socketList[a]))
+                {
+                    if (strcmp(this->buffer, "200"))
+                    {
+                        Response();
+                    }
+                }
+            }
+
+        }
+        else
+            {
+            std::cout << "Delete Client ";
+            this->getClientProperties();
+
+            closesocket(socketList[a]);
+            socketList.erase(socketList.begin() + a);
+        }
+    }
+
+    return true;
+
+}
+
 bool Server::reading(SOCKET param)
 {
     if(FD_ISSET(param,&read_set))
@@ -98,7 +139,6 @@ bool Server::reading(SOCKET param)
         }
     } else
     {
-        std::cout<<"Read Error"<<std::endl;
         return false;
     }
 
@@ -107,10 +147,6 @@ bool Server::reading(SOCKET param)
 
 bool Server::writing(SOCKET param, char* message)
 {
-    if(FD_ISSET(param,&write_set))
-    {
-        FD_CLR(param, &write_set);
-
         if (SOCKET_ERROR == send(param, message, 20, 0))
         {
             error_code = WSAGetLastError();
@@ -118,11 +154,6 @@ bool Server::writing(SOCKET param, char* message)
 
             return false;
         }
-    } else
-        {
-        std::cout<<"Writing Error"<<std::endl;
-        return false;
-    }
 
 
     return true;
@@ -156,45 +187,6 @@ unsigned long long Server::getConnectionClientCount()
     return this->socketList.size();
 }
 
-bool Server::Request()
-{
-    for(unsigned int a=0;a<socketList.size();++a)
-    {
-        FD_ZERO(&write_set);
-        FD_ZERO(&read_set);
-
-        FD_SET(socketList[a],&read_set);
-        FD_SET(socketList[a],&write_set);
-
-        if(select(socketList.size(),&read_set,&write_set,NULL,&time)<0)
-        {
-            continue;
-        }
-
-        if (writing(socketList[a], (char *) "request"))
-        {
-            if (reading(socketList[a]))
-            {
-                if (strcmp(this->buffer, "200"))
-                {
-                    Response();
-                }
-            }
-
-        }
-        else
-        {
-            std::cout << "Delete Client ";
-            this->getClientProperties();
-
-            closesocket( socketList[a] );
-            socketList.erase(socketList.begin() + a);
-        }
-    }
-
-    return true;
-
-}
 
 void Server::Response()
 {
