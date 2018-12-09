@@ -85,10 +85,11 @@ bool Server::listenning()
 
 bool Server::writing(SOCKET param,char* message)
 {
-       if ((error_code = send(param, message, sizeof(message), 0)) < 0)
-       {
-         return false;
-       }
+        if ((error_code = send(param, message, sizeof(message), 0)) < 0)
+        {
+            return false;
+        }
+
    return true;
 }
 
@@ -96,20 +97,23 @@ bool Server::writing(SOCKET param,char* message)
 
 bool Server::reading(SOCKET param)
 {
-    if(FD_ISSET(param,&read_set))
-    {
-        FD_CLR(param, &read_set);
+    FD_ZERO(&set);
+    FD_SET(param,&set);
 
-        if ((error_code = recv(param, buffer, sizeof(buffer), 0)) < 0)
+    if(select(param+1,&set,NULL,NULL,&time)>0)
+    {
+        if(FD_ISSET(param,&set))
         {
-            return false;
+            FD_CLR(param,&set);
+
+            if ((error_code = recv(param, buffer, sizeof(buffer), 0)) > 0)
+            {
+                return true;
+            }
         }
 
-    } else
-    {
-        return false;
     }
-    return true;
+    return false;
 }
 
 
@@ -148,17 +152,6 @@ bool Server::Request()
 {
     for(unsigned int a=0;a<socketList.size();++a)
     {
-        FD_ZERO(&write_set);
-        FD_ZERO(&read_set);
-
-        FD_SET(socketList[a],&read_set);
-        FD_SET(socketList[a],&write_set);
-
-        if(select(FD_SETSIZE,&read_set,&write_set,NULL,&time)<0)
-        {
-            continue;
-        }
-
         if (writing(socketList[a], (char *) "request"))
         {
             if (reading(socketList[a]))
