@@ -113,7 +113,11 @@ bool Server::writing(SOCKET param, char* message)
 
             return false;
         }
+    } else
+        {
+        std::cout<<"Error"<<std::endl;
     }
+
 
     return true;
 }
