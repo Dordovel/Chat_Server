@@ -94,6 +94,11 @@ bool Server::writing(SOCKET param,char* message)
             return false;
         }
     }
+    else
+        {
+        std::cout<<"Writing Error"<<std::endl;
+        return false;
+    }
     return true;
 }
 
@@ -110,6 +115,10 @@ bool Server::reading(SOCKET param)
             return false;
         }
 
+    } else
+    {
+        std::cout<<"Read Error"<<std::endl;
+        return false;
     }
     return true;
 }

@@ -8,7 +8,7 @@
 Server::Server(int port)
 {
     this->port=port;
-    this->time.tv_sec=15;
+    this->time.tv_sec=10;
     this->time.tv_usec=0;
 };
 
@@ -96,7 +96,12 @@ bool Server::reading(SOCKET param)
             closesocket(param);
             return false;
         }
+    } else
+    {
+        std::cout<<"Read Error"<<std::endl;
+        return false;
     }
+
     return true;
 }
 
@@ -115,7 +120,8 @@ bool Server::writing(SOCKET param, char* message)
         }
     } else
         {
-        std::cout<<"Error"<<std::endl;
+        std::cout<<"Writing Error"<<std::endl;
+        return false;
     }
 
 
@@ -160,7 +166,7 @@ bool Server::Request()
         FD_SET(socketList[a],&read_set);
         FD_SET(socketList[a],&write_set);
 
-        if(select(FD_SETSIZE,&read_set,&write_set,NULL,&time)<0)
+        if(select(socketList.size(),&read_set,&write_set,NULL,&time)<0)
         {
             continue;
         }
