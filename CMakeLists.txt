@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.11)
 project(untitled1)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -26,6 +26,7 @@ IF(UNIX)
 ENDIF()
 
 add_executable(untitled1 main.cpp N/WinServer.cpp N/UnixServer.cpp N/Server.h Interface/IView.h Interface/IServer.h V/View.cpp V/View.h C/Controller.cpp C/Controller.h)
+
 
 IF(UNIX)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${X11_LIBRARIES})

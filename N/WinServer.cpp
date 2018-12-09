@@ -8,6 +8,8 @@
 Server::Server(int port)
 {
     this->port=port;
+    this->time.tv_sec=15;
+    this->time.tv_usec=0;
 };
 
 
@@ -91,7 +93,7 @@ bool Server::reading(SOCKET param)
         if (SOCKET_ERROR == recv(param, buffer, 20, 0))
         {
             error_code = WSAGetLastError();
-            closesocket(read_write);
+            closesocket(param);
             return false;
         }
     }
